@@ -1,0 +1,55 @@
+* {
+    box-sizing: border-box;
+}
+
+#gui {
+    width: 200px;
+    height: auto;
+    font-size: 20px;
+    background: rgb(168, 213, 249);
+    border: 3px solid rgb(5, 12, 146);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+#gui .header {
+    text-align: center;
+    padding: 10px;
+}
+
+#gui .options {
+    display: flex;
+    justify-content: space-around;
+    padding: 0px 0px 10px 0px;
+}
+
+#gui .options label {
+    width: 100%;
+    background: rgb(114, 183, 239);
+    border: 1px solid rgb(5, 12, 146);
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#gui .options div {
+    display: flex;
+    width: 50px;
+}
+
+#gui .options input {
+    display: none;
+}
+
+#gui .options input:checked ~ label {
+    background: rgb(255, 162, 86);
+}
+
+
+/* Default number of columns */
+
+.container {
+    column-count: 2;
+    column-gap: 30px;
+}

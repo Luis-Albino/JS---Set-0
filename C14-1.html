@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUI</title>
+    <link rel="stylesheet" href="./C14-1.css">
+</head>
+<body>
+
+    <form id="gui">
+
+        <div>
+            <label for="rows">Rows:</label>
+            <input id="rows" name="rows" type="number" min="1" max="10" value="3">
+        </div>
+
+        <div>
+            <label for="columns">Columns:</label>
+            <input id="columns" name="columns" type="number" min="1" max="10" value="3">
+        </div>
+
+        <div>
+            <label for="height">Height (px):</label>
+            <input id="height" name="height" type="number" min="50" max="200" step="25" value="100">
+        </div>
+
+        <div>
+            <label for="width">Width (px):</label>
+            <input id="width" name="width" type="number" min="50" max="200" step="25" value="100">
+        </div>
+
+        <div>
+            <label for="gap">Gap (px):</label>
+            <input id="gap" name="gap" type="number" min="1" max="10" value="6">
+        </div>
+
+        <div>
+            <label for="gap_color">Gap color:</label>
+            <input id="gap_color" name="gap_color" type="color" value="#000000">
+        </div>
+
+        <div>
+            <label for="font">Font (px):</label>
+            <input id="font" name="font" type="number" min="10" max="100" step="10" value="30">
+        </div>
+
+        <div>
+            <label for="font_color">Font color:</label>
+            <input id="font_color" name="font_color" type="color" value="#000000">
+        </div>
+
+        <button type="button" id="apply_changes">Apply changes</button>
+
+    </form>
+
+    <script src="./C14-1.js"></script>
+    
+</body>
+</html>
