@@ -1,10 +1,8 @@
 function addRec (array) {
-    let s0 = array.pop(); // Gives the lastclear element of array and removes it from the array
-    let sum = s0;
-    if (array.length > 0) {
-        sum = sum + addRec(array);
+    let sum = 0;
+    for (let el of array) {
+        sum += el
     }
-    array.push(s0); // adds back the last element of the array
     return sum
 }
 
