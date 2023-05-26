@@ -1,66 +1,70 @@
 ///// Convert to brazilian format /////
 
 function brDate (usDate) {
-    let bool = true;
+    let validFormat = true;
     let month, day, year;
     /* US format validation */
     if (usDate.search(/^\d{1,2}\/\d{1,2}\/\d{1,4}$/) < 0) {
-        bool = false
+        validFormat = false
     }
     else {
-        let firstSlashPosition = usDate.search(/\/\d{1,2}\/\d{1,4}$/);
-        let secondSlashPosition = usDate.search(/\/\d{1,4}$/);
-        month = usDate.slice(0,firstSlashPosition);
-        day = usDate.slice(firstSlashPosition+1,secondSlashPosition);
-        year = usDate.slice(secondSlashPosition+1);
+        let splitedDate = usDate.split("\/");
+        month = splitedDate[0];
+        day = splitedDate[1];
+        year = splitedDate[2];
         /* Checks valid month */
         if (month < 1 || month > 12) {
-            bool = false;
+            validFormat = false;
         }
         /* Checks valid days */
         else if (day < 1 ) {
-            bool = false;
+            validFormat = false;
         }
         else {
             /* Checks valid days for Jan, Mar, May, Jul, Aug, Oct, Dec */
             if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
                 if (day > 31) {
-                    bool = false;
+                    validFormat = false;
                 }
             }
             /* Checks valid days for Apr, Jun, Sep, Nov */
             else if (month == 4 || month == 6 || month == 9 || month == 11) {
                 if (day > 30) {
-                    bool = false;
+                    validFormat = false;
                 }
             }
             /* Checks valid days for Feb (non-leap year) */
             else if (year%4) {
                 if (day > 28) {
-                    bool = false;
+                    validFormat = false;
                 }
             }
             /* leap-year */
             else {
                 if (day > 29) {
-                    bool = false;
+                    validFormat = false;
                 }
             };
         };
     };
-    if (bool) {
-        let date = day+"/"+month+"/"+year;
-        let monthList = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
-        let monthName = monthList[Number(month)-1];
-        let celebration = hollidaysBR[monthName][Number(day)];
-        if (!!celebration) {
-            date = date + " (" + celebration + ")";
-        };
-        console.log(date);
+
+    try {
+        if (!validFormat) throw "Invalid date"
     }
-    else {
-        console.log("Invalid date");
+    catch (err) {
+        console.log(err)
+        return
     };
+
+    let date = day+"/"+month+"/"+year;
+    let monthList = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+    let monthName = monthList[Number(month)-1];
+    let celebration = hollidaysBR[monthName][Number(day)];
+    if (!!celebration) {
+        date = date + " (" + celebration + ")";
+    };
+    
+    return date;
 };
 
 ///// Brazilian Hollidays ////
@@ -126,5 +130,5 @@ let hollidaysBR = {
 };
 
 
-brDate("1/1/2023");
-brDate("06/12/2023");
+console.log(brDate("1/1/2023"));
+console.log(brDate("06/12/2023"));
