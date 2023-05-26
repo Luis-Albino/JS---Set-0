@@ -7,13 +7,13 @@ CustomObject.prototype.c = function () {
     return this.a + this.b;
 };
 
-function printObjProp (object,bool) {
+function printObjProp (object,printOwnProperties) {
     let properties = [];
     for (let prop in object) {
         if (object.hasOwnProperty(prop)) {
             properties.push(prop);
         }
-        else if (!bool === true){
+        else if (!printOwnProperties === true){
             properties.push(prop);
         }
     }
