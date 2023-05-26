@@ -1,15 +1,13 @@
-var el = document.getElementById("a");
-
 function printAttr (element,attributes) {
-    for (attr in attributes) {
-        let value = element.getAttribute(attributes[attr]);
-        if (!!value) {
+    for (let attr of attributes) {
+        let value = element.getAttribute(attr);
+        if (value) {
             console.log(value);
         }
         else {
-            console.log(attributes[attr]+" is undefined");
+            console.log(attr,"is undefined");
         }
     }
 }
 
-printAttr(el,["id","class","style","val"]);
+printAttr(document.getElementById("a"),["id","class","style","val"]);
