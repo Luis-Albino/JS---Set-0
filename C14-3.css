@@ -2,9 +2,9 @@
     box-sizing: border-box;
 }
 
-.template {
+#container {
+    width: 1010px;
     height: auto;
-    width: 1000px;
     border : 2px solid black;
     border-radius : 10px;
     background-color: rgb(151, 212, 239);
@@ -15,45 +15,58 @@
     padding: 0px;
 }
 
-.template li {
+.section {
     display: flex;
     align-items: center;
-    counter-increment: item;
+    width: 1000px;
+    margin: 10px;
 }
 
-.template li:before {
-    height: auto;
-    width: 30%;
-    font-size: 20px;
-    margin: 10px;
-    content: counter(item);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid black;
+.section span {
+    display: block;
+    border: 1px solid black;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
+    text-align: center;
     background: white;
-  }
+    margin-right: 10px;
+}
 
-.template li img {
-    height: 25%;
+img {
+    height: 200px;
     width: auto;
     border: 2px solid black;
     border-radius: 10px;
     cursor: pointer;
+    margin-right: 5px;
 }
 
-.template li .data {
-    height: 75%;
-    width: auto;
-    padding: 10px;
-}
-
-.template li .data .title {
+.title {
     display: inline;
+    cursor: pointer;
 }
 
-.template li .data .info,
-.template li .data .title {
+.info {
+    cursor: pointer;
+    width: 100%;
+}
+
+.data {
+    margin-left: 15px;
+    margin-right: 15px;
+    width: 100%;
+}
+
+.subsection {
+    width: 1000px;
+    margin: 5px;
+}
+
+.subsection img {
+    float: left;
+}
+
+#btn {
     cursor: pointer;
 }
