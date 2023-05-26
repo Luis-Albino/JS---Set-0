@@ -3,15 +3,15 @@ function type (obj) {
 
     /* array type */
     if (objType === "object" && !!obj.length === true) {
-        let bool = true;
+        let behavesAsArray = true;
         let i=0;
         for (let el in obj) {
             if (obj.hasOwnProperty(el)) {
-                bool = bool && (el == i);
+                behavesAsArray = behavesAsArray && (el == i);
                 i++;
             };
         };
-        if (bool && obj.length === i) {
+        if (behavesAsArray && obj.length === i) {
             objType = "array";
         };
     };
