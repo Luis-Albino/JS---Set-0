@@ -26,11 +26,11 @@ function Quadrilateral (length1,length2,length3,length4) {
 
 // Set proto-chain //
 
-Quadrilateral.prototype.__proto__ = Shape.prototype;
+Quadrilateral.prototype = Shape.prototype;
 
 // Additional METHODS //
 
-Quadrilateral.prototype.__proto__["fnPerimeter"] = function () {
+Quadrilateral.prototype["fnPerimeter"] = function () {
     let perimeter = 0;
     for (let i=0; i< this.pEdges.length; i++) {
         perimeter += this.pEdges[i];
@@ -50,20 +50,6 @@ Quadrilateral.prototype["fnArea"] = function () {
 
 
 ////////////////////////////////////
-//////// Square Constructor ////////
-////////////////////////////////////
-
-function Square (size) {
-    Quadrilateral.apply(this,[size,size,size,size]);
-};
-
-// Inherit Quadrilateral.prototype METHODS //
-
-Square.prototype = Quadrilateral.prototype
-
-
-
-////////////////////////////////////
 /////// Rectangle Constructor //////
 ////////////////////////////////////
 
@@ -78,6 +64,20 @@ Rectangle.prototype = Quadrilateral.prototype
 
 
 ////////////////////////////////////
+//////// Square Constructor ////////
+////////////////////////////////////
+
+function Square (size) {
+    Rectangle.apply(this,[size,size]);
+};
+
+// Inherit Quadrilateral.prototype METHODS //
+
+Square.prototype = Rectangle.prototype
+
+
+
+////////////////////////////////////
 /////// Triangle Constructor ///////
 ////////////////////////////////////
 
@@ -87,7 +87,7 @@ function Triangle (length1,length2,length3) {
 
 // Set proto-chain //
 
-Triangle.prototype.__proto__ = Shape.prototype;
+Triangle.prototype = Shape.prototype;
 
 // Additional METHODS //
 
@@ -115,7 +115,7 @@ function Pentagon (size) {
 
 // Set proto-chain //
 
-Pentagon.prototype.__proto__ = Shape.prototype;
+Pentagon.prototype = Shape.prototype;
 
 // Additional METHODS //
 
@@ -144,20 +144,81 @@ objTriangle.fnDisplay();
 objTriangle.fnArea();
 objTriangle.fnPerimeter();
 
-console.log("  SQUARE  ");
-console.log(objSquare);
-objSquare.fnDisplay();
-objSquare.fnArea();
-objSquare.fnPerimeter();
-
 console.log("  RECTANGLE  ");
 console.log(objRectangle);
 objRectangle.fnDisplay();
 objRectangle.fnArea();
 objRectangle.fnPerimeter();
 
+console.log("  SQUARE  ");
+console.log(objSquare);
+objSquare.fnDisplay();
+objSquare.fnArea();
+objSquare.fnPerimeter();
+
 console.log("  PENTAGON  ");
 console.log(objPentagon);
 objPentagon.fnDisplay();
 objPentagon.fnArea();
 objPentagon.fnPerimeter();
+
+
+
+//////////////////////////
+///// My Own Example /////
+////////// ZOO ///////////
+//////////////////////////
+
+let Animal = (function () {
+    let animals = {
+        "terrestrial": 0,
+        "aquatic": 0
+    };
+    return function (type) {
+        try {
+            if (!type === "terrestrial" || !type === "aquatic")
+            throw "invalid type"
+        }
+        catch (err) {
+            return null
+        };
+
+        this["type"] = type;
+        animals[type]++;
+        this.resume =  function () {
+            return "There are " + animals["terrestrial"] + " terrestrial and " 
+                   + animals["aquatic"] + " aquatic animals"
+        }
+
+    }
+})();
+
+function Mammal (species,habitat,foodHabit) {
+    Animal.call(this,"terrestrial")
+    this["species"] = species;
+    this["habitat"] = habitat;
+    this["foodHabit"] = foodHabit;
+};
+
+Mammal.prototype.nutrition = function () {
+    let foodHabit = this["foodHabit"];
+    let food;
+    if (foodHabit === "carnivore") {
+        food = "This " + this["species"] + " likes the meat"
+    }
+    else if (foodHabit === "herbivore") {
+        food = "This " + this["species"] + " eats plants"
+    }
+    return food
+}
+
+function Lion () {
+    Mammal.apply(this,["feline","grasslands","carnivore"])
+};
+
+Lion.prototype = Mammal.prototype;
+
+let Simba = new Lion();
+
+console.log(Simba.resume())
+console.log(Simba.nutrition())
