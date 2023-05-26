@@ -9,7 +9,29 @@
 </head>
 <body>
 
-    <script type="module" src="./C14-3.js"></script>
+    <button id="btn" onclick="openURL()">Back</button>
+    <div id="container"></div>
+
+    <template id="template1">
+        <div class="section">
+            <span>1</span>
+            <img src="https://picsum.photos/200/200?random=1" alt="image">
+            <div class="data">
+                <h2 class="title">title</h2>
+                <p class="info">info</p>
+            </div>
+        </div>
+    </template>
+
+    <template id="template2">
+        <div class="subsection">
+            <img src="https://picsum.photos/200/200?random=1" alt="image">
+            <h2 class="title">title</h2>
+            <p class="info">info</p>
+        </div>
+    </template>
+
+    <script src="./C14-3.js"></script>
     
 </body>
 </html>
