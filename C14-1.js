@@ -24,24 +24,31 @@ function createGrid () {
     container.style.border = (gapThickness/2) + "px solid " + gapColor;
     container.style.height = (n*cellHeight + gapThickness) + "px";
     container.style.width = (m*cellWidth + gapThickness) + "px";
-    document.body.appendChild(container);
+
+    let cell = document.createElement("DIV");
+    cell.style.border = (gapThickness/2) + "px solid " + gapColor;
+    cell.style.fontSize = fontSize + "px";
+    cell.style.color = fontColor;
+    cell.style.height = cellHeight + "px";
+    cell.style.width = cellWidth + "px";
+    cell.style.overflow = "hidden";
+
+    let textInput = document.createElement("input");
+    textInput.style.height = "100%";
+    textInput.style.width = cellWidth + "px";
+    textInput.setAttribute("placeholder","Input text");
+
+    cell.appendChild(textInput);
 
     for (let i=0; i<totalCells; i++) {
-        let cell = document.createElement("DIV");
-        cell.style.border = (gapThickness/2) + "px solid " + gapColor;
-        cell.style.fontSize = fontSize + "px";
-        cell.style.color = fontColor;
-        cell.style.height = cellHeight + "px";
-        cell.style.width = cellWidth + "px";
-        cell.style.overflow = "hidden";
-        cell.innerHTML = i+1;
-        container.appendChild(cell);
-        let textInput = document.createElement("input");
-        textInput.style.height = "100%";
-        textInput.style.width = cellWidth + "px";
-        textInput.setAttribute("placeholder","Input text");
-        cell.appendChild(textInput);
+        let cellCopy = cell.cloneNode(true);
+        let textInputCopy = textInput.cloneNode(true);
+        cellCopy.innerHTML = i+1;
+        cellCopy.appendChild(textInputCopy);
+        container.appendChild(cellCopy);
     };
+
+    document.body.appendChild(container);
 
 };
 
