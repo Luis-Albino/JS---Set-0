@@ -1,11 +1,27 @@
 function Image (dataArray,width,height,imgName) {
+    try {
+        if (width*height != dataArray.length) 
+        throw "invalid image size";
+    }
+    catch (err) {
+        console.log(err)
+    };
     this.width = width,
     this.height = height,
     this.name = imgName,
     this.getPixel = function (x,y) {
+        try {
+            if (x > width) 
+            throw "invalid pixel width position"
+            if (y > height) 
+            throw "invalid pixel height position"
+        }
+        catch (err) {
+            console.log(err)
+        };
         return dataArray[width*(y-1)+x-1]
     }
-}
+};
 
 
 /* FAKE IMAGE */
