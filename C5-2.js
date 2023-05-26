@@ -9,24 +9,24 @@ const firstName = ["Joe","Nicholas","Kevin","Brian","Bruno","Ana","Sophia","Sara
 const middleName = ["A.","B.","C.","D.","E.","F.","G.","H.","I.","J."];
 const lastName = ["Smith","Johnson","Williams","Brown","Jones","Garcia","Miller","Davis","Lanen","Fernandez"];
 
-/// Users ///
-
-var user =[];
-const totalUsers = 50;
-for (let i=0; i<totalUsers; i++) {
-    let j = Math.floor(Math.random()*(firstName.length));
-    let k = Math.floor(Math.random()*(middleName.length));
-    let l = Math.floor(Math.random()*(lastName.length));
-    user[i] = {
-        "name": firstName[j] +" "+ middleName[k] +" "+ lastName[l]
-    };
-}
-
 /// random function ///
 
 function rndm (number) {
     return Math.floor(Math.random()*number)
 };
+
+/// Users ///
+
+var user =[];
+const totalUsers = 50;
+for (let i=0; i<totalUsers; i++) {
+    let j = rndm(firstName.length);
+    let k = rndm(middleName.length);
+    let l = rndm(lastName.length);
+    user[i] = {
+        "name": firstName[j] +" "+ middleName[k] +" "+ lastName[l]
+    };
+}
 
 /// Building ///
 
@@ -119,51 +119,37 @@ function find (something) {
     let survey;
     /// MEMOIZATION ///
     if (find.prototype[something]) {
+        // if something has already been requested //
         survey = find.prototype[something];
-        console.log(something +" had already been requested");
-        // console.log(survey);
     }
     else {
-        let bool = false;
+        let found = false;
         for (let i=0; i<user.length; i++) {
-            bool = bool || (user[i]["name"] === something);
-            if (bool) {
+            found = found || (user[i]["name"] === something);
+            if (found) {
+                // list personal information //
                 survey = user[i];
                 i = user.length;
-                console.log("Personal information:");
             };
         };
-        if (!bool) {
+        if (!found) {
             for (let i=0; i<equipment.length; i++) {
-                bool = bool || (equipment[i] === something);
-                if (bool) {
+                found = found || (equipment[i] === something);
+                if (found) {
+                    // list equipment information //
                     survey = equipmentInventory[something+"s"];
                     i = equipment.length;
-                    // list = equipment;
-                    console.log("Equipment information:");
                 };
             };
         };
-        if (bool) {
+        if (found) {
             find.prototype[something] = survey; /// MEMOIZATION ///
-            console.log(survey);
         }
-        else {
-            console.log(something + " has not been found");
-        };
-        // if (!bool) {
-        //     console.log(something + " has not been found");
-        // };
-
     };
-
-    // find.prototype[something] = survey; /// MEMOIZATION ///
-
-    // return survey
+    return survey
 };
 var name1 = user[0]["name"];
-find(name1);
-find("computer");
-find("strange thing");
-console.log(name1);
-find(name1)
+console.log("User'a name:",name1)
+console.log(find(name1));
+console.log(find("computer"));
+console.log(find("strange thing"));
