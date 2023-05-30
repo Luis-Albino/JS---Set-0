@@ -6,16 +6,7 @@ function distance () {
         validInput = validInput && (typeof el === "number")
     };
 
-    try {
-        if (j != 2 && j != 3 && j < 3)
-        throw "Insufficient parameters";
-        if (!validInput || j > 3)
-        throw "incompatible point data"
-    }
-    catch (err) {
-        console.log(err)
-        return
-    };
+    if (j != 2 && j != 3 && j < 3 || !validInput || j > 3) return undefined;
 
     let sum = 0;
     for (let i=0; i<j; i++) {
