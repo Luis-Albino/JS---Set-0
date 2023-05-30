@@ -1,28 +1,28 @@
 ///// Use of memoization /////
 
 function fibonacci (nth) {
+    let cache = fibonacci.prototype.cache;
     let fib;
     if (nth <= 1) {
-        fib = fibonacci.prototype[nth];
+        fib = cache[nth];
     }
     else {
         let a;
-        if (fibonacci.prototype[nth-1]) {
-            a = fibonacci.prototype[nth-1];
+        if (cache[nth-1]) {
+            a = cache[nth-1];
         }
         else {
             a = fibonacci(nth-1);
-            fibonacci.prototype[nth-1] = a;
+            cache.push(a);
         }
-        let b = fibonacci.prototype[nth-2];
+        let b = cache[nth-2];
         fib = a+b;
     }
 
     return fib
 };
 
-fibonacci.prototype[0] = 0;
-fibonacci.prototype[1] = 1;
+fibonacci.prototype.cache = [0,1];
 
 console.log("fibonacci(4)=",fibonacci(4));
 console.log("fibonacci(9)=",fibonacci(9));
