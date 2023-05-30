@@ -24,4 +24,4 @@ var delta2 = distance (x1, y1, z1, x2, y2, z2); // delta = 3.1622…
 
 console.log("delta1=",delta1);
 console.log("delta2=",delta2);
-distance(x1,x2);
+console.log(distance(x1,x2));
