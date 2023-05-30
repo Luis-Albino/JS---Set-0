@@ -3,29 +3,21 @@ class obj {
 
     constructor() {}
 
-    get value () {
+    get getValue () {
         return this.#privateVar
     }
 
-    set newValue (x) {
-        try {
-            if (typeof x != "number") 
-            throw "newValue() invalid input"
-        }
-        catch (err) {
-            console.log(err)
-            return
-        }
-        this.#privateVar = x
+    set setValue (x) {
+        if (typeof x === "number") this.#privateVar = x;
     } 
 }
 
 b = new obj();
-console.log("Private variable default value = ",b.value); // expected: 1
-b.newValue = 2;
-console.log("Private variable updated value = ",b.value); // expected: 2
-b.newValue = "hi"; // expected: "newValue() invalid input"
-console.log(b.privateVar); // expected: "undefined" property
+console.log("Private variable default value = ",b.getValue); // expected: 1
+b.setValue = 2;
+console.log("Private variable updated value = ",b.getValue); // expected: 2
+b.getValue = "hi"; // expected: value does not changes
+console.log(b.privateVar); // expected: undefined
 
 
 ///////////////////////
@@ -36,26 +28,18 @@ console.log(b.privateVar); // expected: "undefined" property
 function obj2 () {
     let privateVar = 1;
     return {
-        get value () {
+        get getValue () {
             return privateVar 
         },
-        set newValue (x) {
-            try {
-                if (typeof x != "number") 
-                throw "newValue() invalid input"
-            }
-            catch (err) {
-                console.log(err)
-                return
-            }
-            privateVar = x
+        set setValue (x) {
+            if (typeof x === "number") privateVar = x;
         }
     }
 }
 
 c = new obj2();
-console.log("Private variable default value = ",c.value); // expected: 1
-c.newValue = 2;
-console.log("Private variable updated value = ",c.value); // expected: 2
-c.newValue = "hi"; // expected: "newValue() invalid input"
-console.log(c.privateVar); // expected: "undefined" property
+console.log("Private variable default value = ",c.getValue); // expected: 1
+c.setValue = 2;
+console.log("Private variable updated value = ",c.getValue); // expected: 2
+c.setValue = "hi"; // expected: value does not changes
+console.log(c.privateVar); // expected: undefined
