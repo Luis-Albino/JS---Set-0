@@ -116,7 +116,7 @@ commonUse ("gabinets");
 /// SEARCH ///
 
 function find (something) {
-    let survey;
+    let survey = null;
     /// MEMOIZATION ///
     if (find.prototype[something]) {
         // if something has already been requested //
