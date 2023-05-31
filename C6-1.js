@@ -1,133 +1,116 @@
 ////////////////////////////////////
-///////// Shape Constructor ////////
+//////////// Shape Class ///////////
 ////////////////////////////////////
 
-function Shape () {
-    let edges = [];
-    for (el in arguments) {
-        edges[el] = arguments[el];
+class Shape {
+    constructor () {
+        let edges = [];
+        for (let el in arguments) {
+            edges[el] = arguments[el];
+        }
+        this["pEdges"] = edges;
     }
-    this["pEdges"] = edges;
-};
-// Shape constructor METHODS
-Shape.prototype["fnDisplay"] = function () {
-    console.log("Figure with " + this["pEdges"].length + " edge" + (this["pEdges"].length>1?"s":""))
-};
 
+    fnDisplay () {
+        console.log("Figure with " + this["pEdges"].length + " edge" + (this["pEdges"].length>1?"s":""))
+    }
+};
 
 
 ////////////////////////////////////
-//// Quadrilateral Constructor /////
+/////// Quadrilateral Class ////////
 ////////////////////////////////////
 
-function Quadrilateral (length1,length2,length3,length4) {
-    Shape.apply(this,[length1,length2,length3,length4]);
-};
+class Quadrilateral extends Shape {
 
-// Set proto-chain //
+    constructor (length1,length2,length3,length4) {
+        super(length1,length2,length3,length4)
+    }
 
-Quadrilateral.prototype = Shape.prototype;
-
-// Additional METHODS //
-
-Quadrilateral.prototype["fnPerimeter"] = function () {
-    let perimeter = 0;
-    for (let i=0; i< this.pEdges.length; i++) {
-        perimeter += this.pEdges[i];
+    fnPerimeter () {
+        let perimeter = 0;
+        for (let i=0; i< this.pEdges.length; i++) {
+            perimeter += this.pEdges[i];
+        };
+        console.log("This figure's perimeter is = " + perimeter);
     };
-    console.log("This figure's perimeter is = " + perimeter);
-};
-
-Quadrilateral.prototype["fnArea"] = function () {
-    let area = 1;
-    for (let i=0; i< this.pEdges.length; i++) {
-        area = area*this.pEdges[i];
+    
+    fnArea () {
+        let area = 1;
+        for (let i=0; i< this.pEdges.length; i++) {
+            area = area*this.pEdges[i];
+        };
+        area = Math.sqrt(area);
+        console.log("This figure's area is = " + area);
     };
-    area = Math.sqrt(area);
-    console.log("This figure's area is = " + area);
 };
 
-
-
 ////////////////////////////////////
-/////// Rectangle Constructor //////
+///////// Rectangle Class //////////
 ////////////////////////////////////
 
-function Rectangle (length1,length2) {
-    Quadrilateral.apply(this,[length1,length1,length2,length2]);
+class Rectangle extends Quadrilateral {
+    constructor (length1,length2) {
+        super(length1,length1,length2,length2)
+    }
 };
 
-// Inherit Quadrilateral.prototype METHODS //
-
-Rectangle.prototype = Quadrilateral.prototype
-
-
-
 ////////////////////////////////////
-//////// Square Constructor ////////
+/////////// Square Class ///////////
 ////////////////////////////////////
 
-function Square (size) {
-    Rectangle.apply(this,[size,size]);
+class Square extends Rectangle {
+    constructor (size) {
+        super(size,size);
+    }
 };
 
-// Inherit Quadrilateral.prototype METHODS //
-
-Square.prototype = Rectangle.prototype
-
-
-
 ////////////////////////////////////
-/////// Triangle Constructor ///////
+////////// Triangle Class //////////
 ////////////////////////////////////
 
-function Triangle (length1,length2,length3) {
-    Shape.apply(this,[length1,length2,length3]);
+class Triangle extends Shape {
+    constructor (length1,length2,length3) {
+        super(length1,length2,length3);
+    }
+
+    fnPerimeter () {
+        let perimeter = 0;
+        for (let i=0; i< this.pEdges.length; i++) {
+            perimeter += this.pEdges[i];
+        };
+        console.log("This figure's perimeter is = " + perimeter);
+    };
+
+    fnArea () {
+        let x2 = this.pEdges[0];
+        let y2 = this.pEdges[1];
+        let z2 = this.pEdges[2];
+        x2 = x2*x2;
+        y2 = y2*y2;
+        z2 = z2*z2;
+        let area = x2 + y2 - z2;
+        area = 0.5*Math.sqrt(x2*y2-area*area);
+        console.log("Triangle area = " + area);
+    };
 };
-
-// Set proto-chain //
-
-Triangle.prototype = Shape.prototype;
-
-// Additional METHODS //
-
-Triangle.prototype["fnArea"] = function () {
-    let x2 = this.pEdges[0];
-    let y2 = this.pEdges[1];
-    let z2 = this.pEdges[2];
-    x2 = x2*x2;
-    y2 = y2*y2;
-    z2 = z2*z2;
-    let area = x2 + y2 - z2;
-    area = 0.5*Math.sqrt(x2*y2-area*area);
-    console.log("Triangle area = " + area);
-};
-
-
 
 ////////////////////////////////////
-/////// Penthagon Constructor //////
+////////// Penthagon Class /////////
 ////////////////////////////////////
 
-function Pentagon (size) {
-    Shape.apply(this,[size,size,size,size,size]);
+class Pentagon extends Shape {
+    constructor (size) {
+        super(size,size,size,size,size);
+    }
+    fnArea () {
+        let alpha = Math.PI*54/180;
+        let beta = Math.PI*72/180;
+        let area = 2.5*(this.pEdges[0])*(this.pEdges[0])*(Math.sin(alpha))
+        *(Math.sin(alpha))/(Math.sin(beta));
+        console.log("Triangle area = " + area);
+    };
 };
-
-// Set proto-chain //
-
-Pentagon.prototype = Shape.prototype;
-
-// Additional METHODS //
-
-Pentagon.prototype["fnArea"] = function () {
-    let alpha = Math.PI*54/180;
-    let beta = Math.PI*72/180;
-    let area = 2.5*(this.pEdges[0])*(this.pEdges[0])*(Math.sin(alpha))
-    *(Math.sin(alpha))/(Math.sin(beta));
-    console.log("Triangle area = " + area);
-};
-
-
 
 ////////////////////////////////////
 ///////// Creating objects /////////
@@ -160,7 +143,6 @@ console.log("  PENTAGON  ");
 console.log(objPentagon);
 objPentagon.fnDisplay();
 objPentagon.fnArea();
-objPentagon.fnPerimeter();
 
 
 
@@ -212,12 +194,11 @@ Mammal.prototype.nutrition = function () {
     return food
 }
 
-function Lion () {
-    Mammal.apply(this,["feline","grasslands","carnivore"])
+class Lion extends Mammal {
+    constructor () {
+        super("feline","grasslands","carnivore")
+    }
 };
-
-Lion.prototype = Mammal.prototype;
-
 let Simba = new Lion();
 
 console.log(Simba.resume())
