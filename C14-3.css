@@ -13,6 +13,7 @@
     top: 50px;
     transform: translate(-50%,0);
     padding: 0px;
+    counter-reset: my-counter;
 }
 
 .section {
@@ -31,6 +32,11 @@
     text-align: center;
     background: white;
     margin-right: 10px;
+    counter-increment: my-counter
+}
+
+.section span::before {
+    content: counter(my-counter);
 }
 
 img {
