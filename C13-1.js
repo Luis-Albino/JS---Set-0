@@ -1,19 +1,22 @@
 ///// creating Cell nodes /////
-
-let container = document.getElementById("container");
+let containerID = "container";
+let container = document.getElementById(containerID);
 
 const cells = 25;
+const fragment = new DocumentFragment();
 
 for (let i=0; i<cells; i++) {
     let el = document.createElement("div");
     el.innerText = i;
-    container.appendChild(el);
+    fragment.appendChild(el);
 };
+
+container.appendChild(fragment);
 
 ///// addEventListener /////
 ///// event delegation /////
 
 container.addEventListener("click",function (event) {
     let target = event.target;
-    window.alert(target.innerText);
-});
+    if (target.id != containerID) window.alert(target.innerText);
+})
