@@ -3,15 +3,17 @@
 function brDate (usDate) {
     let validFormat = true;
     let month, day, year;
+
+    dateFormat =  usDate.match(/^(\d{1,2})\/(\d{1,2})\/(\d{1,4})$/);
+
     /* US format validation */
-    if (usDate.search(/^\d{1,2}\/\d{1,2}\/\d{1,4}$/) < 0) {
+    if (!dateFormat) {
         validFormat = false
     }
     else {
-        let splitedDate = usDate.split("\/");
-        month = splitedDate[0];
-        day = splitedDate[1];
-        year = splitedDate[2];
+        month = dateFormat[1];
+        day = dateFormat[2];
+        year = dateFormat[3];
         /* Checks valid month */
         if (month < 1 || month > 12) {
             validFormat = false;
@@ -48,13 +50,8 @@ function brDate (usDate) {
         };
     };
 
-    try {
-        if (!validFormat) throw "Invalid date"
-    }
-    catch (err) {
-        console.log(err)
-        return
-    };
+
+    if (!validFormat) return undefined;
 
     let date = day+"/"+month+"/"+year;
     let monthList = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
