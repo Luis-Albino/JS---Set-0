@@ -15,19 +15,17 @@ function toBase10 (base16) {
 function toRGB (hexNumber) {
     let rgb = [];
 
-    /* Checks wether it is in hex format */
-    if (hexNumber.length != 7 || hexNumber.slice(0,1) != "#") return undefined;
+    let hexFormat = hexNumber.match(/^\#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
 
-    let match = hexNumber.match(/[0-9a-f]{2}/gi);
-    console.log(match)
-    if (match.length < 3) return undefined;
+    /* Checks wether it is in hex format */
+    if (!hexFormat) return undefined;
 
     /* Computes rgb */
-    for (let i in match) {
-        rgb[i] = toBase10(match[i])
+    for (let i=1; i<4; i++) {
+        rgb[i] = toBase10(hexFormat[i])
     }
 
-    return "rgb("+rgb[0]+","+rgb[1]+","+rgb[2]+")";
+    return "rgb("+rgb[1]+","+rgb[2]+","+rgb[3]+")";
 
 };
 
