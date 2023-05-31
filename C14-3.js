@@ -25,7 +25,7 @@ function homeTemplate () {
             let title = section.children[2].children[0];
             let info = section.children[2].children[1];
             // set HTML //
-            number.innerHTML = i;
+            // number.innerHTML = i;
             image.src = obj["image"];
             title.innerHTML = obj["title"];
             info.innerHTML = obj["info"];
