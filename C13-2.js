@@ -1,9 +1,15 @@
+var meterValue = localStorage.getItem("meterValue") || 0;
+
+document.getElementById("mtr").value = meterValue;
+if (meterValue == 3) {
+    localStorage.setItem("meterValue",0);
+    let btn = document.getElementById("btn");
+    btn.disabled = true;
+    btn.style.cursor = "default";
+}
+
 function incrementValue () {
-    let mtr = document.getElementById("mtr");
-    mtr.value += 1;
-    if (mtr.value === 3) {
-        let btn = document.getElementById("btn");
-        btn.disabled = true;
-        btn.style.cursor = "default";
-    }
+    meterValue++;
+    localStorage.setItem("meterValue",meterValue);
+    window.location.reload();
 };
