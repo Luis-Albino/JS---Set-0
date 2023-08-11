@@ -1,11 +1,12 @@
+"use strict";
+
 ///// Convert to brazilian format /////
 
 function brDate (usDate) {
     let hollidays = BrasilianHollidays();
     let validFormat = true;
     let month, day, year;
-
-    dateFormat =  usDate.match(/^(\d{1,2})\/(\d{1,2})\/(\d{1,4})$/);
+    let dateFormat =  usDate.match(/^(\d{1,2})\/(\d{1,2})\/(\d{1,4})$/);
 
     /* US format validation */
     if (!dateFormat) {
