@@ -30,16 +30,11 @@ function distance () {
 
     }
 
-    try {
-        for (let i=0; i<2; i++) {
-            for (let el of vector[i]) {
-                // Check for possible NaN
-                if (el !== 0 && !el) throw null
-            }
+    for (let i=0; i<2; i++) {
+        for (let el of vector[i]) {
+            // Check for possible NaN
+            if (el !== 0 && !el) return null
         }
-    }
-    catch (err) {
-        return err
     }
 
     sum = 0;
