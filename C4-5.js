@@ -2,15 +2,10 @@ function distance () {
     let j = arguments.length/2; // Auxiliar length
     let validInput = true; // Auxiliar boolean variable
 
-    try {
-        for (let el of arguments) {
-            validInput = validInput && (typeof el === "number")
-            // Check for possible NaN
-            if (el !== 0 && !el) throw null
-        }
-    }
-    catch (err) {
-        return err
+    for (let el of arguments) {
+        validInput = validInput && (typeof el === "number")
+        // Check for possible NaN
+        if (el !== 0 && !el) return null
     }
 
     if (j != 2 && j != 3 && j < 3 || !validInput || j > 3) return;
