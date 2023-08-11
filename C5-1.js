@@ -1,3 +1,4 @@
+"use strict";
 /// names ///
 
 const firstName = ["Joe","Nicholas","Kevin","Brian","Bruno","Ana","Sophis","Sara","Marian","Julia"];
@@ -32,7 +33,7 @@ function Client (user) {
 Client.prototype = {
     get Balance () {
         let userMoney = this.handleMoney(0);
-        return "Dear "+ user[this.accountNumber]["name"]+", you have $" + userMoney + " in your account"
+        return "Dear "+ user[this.accountNumber]["name"]+", you have $" + userMoney + " in your account and $" + user[this.accountNumber]["cash"] + " in your pocket"
     },
 
     set Retrieve (quantity) {
@@ -45,8 +46,8 @@ Client.prototype = {
         };
     },
 
-    Deposit : function (quantity,toAccount) {
-        toAccountNumber = toAccount["accountNumber"]
+    Deposit : function (quantity,toAccount,isTransfered = true) {
+        let toAccountNumber = toAccount["accountNumber"]
         if (quantity === 0 || (typeof quantity) != "number") {
             console.log("Invalid amount of money");
         }
@@ -54,7 +55,7 @@ Client.prototype = {
             console.log("Invalid account number");
         }
         else {
-            if (user[this.accountNumber]["cash"] >= quantity) {
+            if ((isTransfered && this.handleMoney(0) >= quantity) || user[this.accountNumber]["cash"] >= quantity) {
                 toAccount.handleMoney(quantity);
                 user[this.accountNumber]["cash"] = user[this.accountNumber]["cash"] - quantity;
                 let destinatary;
@@ -64,11 +65,11 @@ Client.prototype = {
                 else {
                     destinatary = "" + user[toAccountNumber]["name"]
                 };
-                console.log("Dear " + user[this.accountNumber]["name"] + ", you have deposited $" + quantity + " to " + destinatary);
+                console.log("Dear " + user[this.accountNumber]["name"] + ", you have " + (isTransfered?"transfered":"deposited") + " $" + quantity + " to " + destinatary);
                 
             }
             else {
-                console.log(user[this.accountNumber]["name"]+" does not have enough cash");
+                console.log("Dear " + user[this.accountNumber]["name"]+", you don't have enough " + (isTransfered?"funds":"money in your pocket"));
             };
         };
     }
@@ -89,10 +90,12 @@ function Bank () {
         numberOfClients++;
     };
     this.balance = function (accountNumber) {
-        // let userMoney = this.handleMoney(0);
-        return "Dear "+ user[accountNumber]["name"]+", you have $" + accounts[accountNumber].handleMoney(0) + " in your account"
+        return accounts[accountNumber].Balance;
     };
     this.deposit = function (fromAccountNumber,toAccountNumber,quantity) {
+        accounts[fromAccountNumber].Deposit(quantity,accounts[toAccountNumber],false);
+    };
+    this.transfer = function (fromAccountNumber,toAccountNumber,quantity) {
         accounts[fromAccountNumber].Deposit(quantity,accounts[toAccountNumber]);
         accounts[fromAccountNumber].Retrieve = quantity
     };
@@ -102,8 +105,10 @@ function Bank () {
 }
 
 let myBank = new Bank();
-myBank.deposit(0,1,200)
+myBank.transfer(0,1,1300)
+myBank.deposit(0,2,200)
 console.log(myBank.balance(0))
 console.log(myBank.balance(1))
-myBank.retrieve(1,300);
-console.log(myBank.balance(1))
+console.log(myBank.balance(2))
+myBank.retrieve(2,300);
+console.log(myBank.balance(2))
