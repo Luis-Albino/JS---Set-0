@@ -19,6 +19,7 @@ for (let i=0; i<totalUsers; i++) {
 /// Client Constructor ///
 
 function Client (user) {
+    this.user = user;
     let moneyOnBank = 2000; // Dollars saved on Bank: stored at CLOSURE
     this.handleMoney = function (quantity) {
         if (quantity != 0) {
@@ -33,20 +34,20 @@ function Client (user) {
 Client.prototype = {
     get Balance () {
         let userMoney = this.handleMoney(0);
-        return "Dear "+ user[this.accountNumber]["name"]+", you have $" + userMoney + " in your account and $" + user[this.accountNumber]["cash"] + " in your pocket"
+        return "Dear "+ this.user["name"]+", you have $" + userMoney + " in your account and $" + this.user["cash"] + " in your pocket"
     },
 
     set Retrieve (quantity) {
         if (this.handleMoney(0) >= quantity) {
             this.handleMoney(-quantity);
-            user[this.accountNumber]["cash"] = user[this.accountNumber]["cash"] + quantity;
+            this.user["cash"] = this.user["cash"] + quantity;
         }
         else {
             console.log("Insufficient funds");
         };
     },
 
-    Deposit : function (quantity,toAccount,isTransfered = true) {
+    Deposit : function (quantity,toAccount,isDeposited = true) {
         let toAccountNumber = toAccount["accountNumber"]
         if (quantity === 0 || (typeof quantity) != "number") {
             console.log("Invalid amount of money");
@@ -55,9 +56,14 @@ Client.prototype = {
             console.log("Invalid account number");
         }
         else {
-            if ((isTransfered && this.handleMoney(0) >= quantity) || user[this.accountNumber]["cash"] >= quantity) {
+            if ((!isDeposited && this.handleMoney(0) >= quantity) || this.user["cash"] >= quantity) {
                 toAccount.handleMoney(quantity);
-                user[this.accountNumber]["cash"] = user[this.accountNumber]["cash"] - quantity;
+                if (isDeposited) {
+                    this.user["cash"] = this.user["cash"] - quantity;
+                }
+                else {
+                    this.handleMoney(-quantity);
+                }
                 let destinatary;
                 if (toAccountNumber === this.accountNumber) {
                     destinatary = "your account";
@@ -65,15 +71,23 @@ Client.prototype = {
                 else {
                     destinatary = "" + user[toAccountNumber]["name"]
                 };
-                console.log("Dear " + user[this.accountNumber]["name"] + ", you have " + (isTransfered?"transfered":"deposited") + " $" + quantity + " to " + destinatary);
+                console.log("Dear " + this.user["name"] + ", you have " + (!isDeposited?"transfered":"deposited") + " $" + quantity + " to " + destinatary);
                 
             }
             else {
-                console.log("Dear " + user[this.accountNumber]["name"]+", you don't have enough " + (isTransfered?"funds":"money in your pocket"));
+                console.log("Dear " + this.user["name"]+", you don't have enough " + (!isDeposited?"funds":"money in your pocket"));
             };
         };
     }
 };
+
+
+
+/// Creating client list ///
+let clients = [];
+for (let i=0; i<totalUsers; i++) {
+    clients[i] = new Client(user[i])
+}
 
 
 /// Creating Bank ///
@@ -84,7 +98,7 @@ function Bank () {
     let accounts = {};
 
     for (let i=0; i<totalUsers; i++) {
-        let client = new Client(user[i]);
+        let client = clients[i];
         accounts[numberOfClients] = client;
         client["accountNumber"] = numberOfClients;
         numberOfClients++;
@@ -93,11 +107,10 @@ function Bank () {
         return accounts[accountNumber].Balance;
     };
     this.deposit = function (fromAccountNumber,toAccountNumber,quantity) {
-        accounts[fromAccountNumber].Deposit(quantity,accounts[toAccountNumber],false);
+        accounts[fromAccountNumber].Deposit(quantity,accounts[toAccountNumber]);
     };
     this.transfer = function (fromAccountNumber,toAccountNumber,quantity) {
-        accounts[fromAccountNumber].Deposit(quantity,accounts[toAccountNumber]);
-        accounts[fromAccountNumber].Retrieve = quantity
+        accounts[fromAccountNumber].Deposit(quantity,accounts[toAccountNumber],false);
     };
     this.retrieve =  function (fromAccountNumber,quantity) {
         accounts[fromAccountNumber].Retrieve = quantity
@@ -105,6 +118,18 @@ function Bank () {
 }
 
 let myBank = new Bank();
+
+/// Client transactions ///
+console.log(clients[0].Balance)
+clients[0].Retrieve = 300
+console.log(clients[0].Balance)
+clients[1].Deposit(200,clients[3])
+clients[1].Deposit(200,clients[2],false)
+console.log(clients[1].Balance)
+console.log(clients[2].Balance)
+console.log(clients[3].Balance)
+
+/// Bank transactions ///
 myBank.transfer(0,1,1300)
 myBank.deposit(0,2,200)
 console.log(myBank.balance(0))
