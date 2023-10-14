@@ -6,134 +6,84 @@ const lastName = ["Smith","Johnson","Williams","Brown","Jones","Garcia","Miller"
 
 /// Users list ///
 
-var user =[];
-const totalUsers = 10;
-for (let i=0; i<totalUsers; i++) {
-    user[i] = {
-        "cash":1000, // Dollars in cash
-        "name": firstName[Math.floor(Math.random()*(firstName.length))] +" "+ lastName[Math.floor(Math.random()*(lastName.length))]
-    };
-};
-
-
-/// Client Constructor ///
-
-function Client (user) {
-    this.user = user;
-    let moneyOnBank = 2000; // Dollars saved on Bank: stored at CLOSURE
-    this.handleMoney = function (quantity) {
-        if (quantity != 0) {
-            moneyOnBank +=  quantity;
-        }
-        else {
-            return moneyOnBank
-        }
-    };
- };
-
-Client.prototype = {
-    get Balance () {
-        let userMoney = this.handleMoney(0);
-        return "Dear "+ this.user["name"]+", you have $" + userMoney + " in your account and $" + this.user["cash"] + " in your pocket"
-    },
-
-    set Retrieve (quantity) {
-        if (this.handleMoney(0) >= quantity) {
-            this.handleMoney(-quantity);
-            this.user["cash"] = this.user["cash"] + quantity;
-        }
-        else {
-            console.log("Insufficient funds");
-        };
-    },
-
-    Deposit : function (quantity,toAccount,isDeposited = true) {
-        let toAccountNumber = toAccount["accountNumber"]
-        if (quantity === 0 || (typeof quantity) != "number") {
-            console.log("Invalid amount of money");
-        }
-        else if (!toAccountNumber || (typeof toAccountNumber) != "number") {
-            console.log("Invalid account number");
-        }
-        else {
-            if ((!isDeposited && this.handleMoney(0) >= quantity) || this.user["cash"] >= quantity) {
-                toAccount.handleMoney(quantity);
-                if (isDeposited) {
-                    this.user["cash"] = this.user["cash"] - quantity;
-                }
-                else {
-                    this.handleMoney(-quantity);
-                }
-                let destinatary;
-                if (toAccountNumber === this.accountNumber) {
-                    destinatary = "your account";
-                }
-                else {
-                    destinatary = "" + user[toAccountNumber]["name"]
-                };
-                console.log("Dear " + this.user["name"] + ", you have " + (!isDeposited?"transfered":"deposited") + " $" + quantity + " to " + destinatary);
-                
-            }
-            else {
-                console.log("Dear " + this.user["name"]+", you don't have enough " + (!isDeposited?"funds":"money in your pocket"));
-            };
-        };
-    }
-};
-
-
-
-/// Creating client list ///
-let clients = [];
-for (let i=0; i<totalUsers; i++) {
-    clients[i] = new Client(user[i])
+function Person () {
+    this.name = firstName[Math.floor(Math.random()*(firstName.length))] +" "+ lastName[Math.floor(Math.random()*(lastName.length))];
+    this.cash =1000 // Dollars in cash
 }
 
+Person.prototype.handleCash = function (quantity) {
+    // Receiving or Paying money //
+    if (quantity > 0 || this["cash"] > -quantity) {
+        this["cash"] += quantity;
+        return true
+    }
+    // Not enough money for payment //
+    return false
+}
 
-/// Creating Bank ///
+var person =[];
+const totalPersons = 10;
+for (let i=0; i<totalPersons; i++) {
+    person[i] = new Person();
+};
 
-var numberOfClients = 0;
-
-function Bank () {
+function Bank (bankName) {
+    this.bankName = bankName;
     let accounts = {};
+    let thisAccountNumber = 0;
+    this.newClient = function (newPerson) {
+        let client = {
+            name: newPerson.name,
+            money: 1000,
+        };
+        accounts[[thisAccountNumber]] = client;
+        newPerson[[this.bankName]] = new this.Transactions (thisAccountNumber);
+        newPerson[[this.bankName]].personID = person.indexOf(newPerson);
 
-    for (let i=0; i<totalUsers; i++) {
-        let client = clients[i];
-        accounts[numberOfClients] = client;
-        client["accountNumber"] = numberOfClients;
-        numberOfClients++;
+        thisAccountNumber++;
     };
-    this.balance = function (accountNumber) {
-        return accounts[accountNumber].Balance;
-    };
-    this.deposit = function (fromAccountNumber,toAccountNumber,quantity) {
-        accounts[fromAccountNumber].Deposit(quantity,accounts[toAccountNumber]);
-    };
-    this.transfer = function (fromAccountNumber,toAccountNumber,quantity) {
-        accounts[fromAccountNumber].Deposit(quantity,accounts[toAccountNumber],false);
-    };
-    this.retrieve =  function (fromAccountNumber,quantity) {
-        accounts[fromAccountNumber].Retrieve = quantity
+
+    this.Transactions.prototype.operation = function (type,quantity,toAccount) {
+        let thisPerson = person[this.personID];
+        switch (type) {
+            case "deposit": 
+                if (thisPerson.handleCash(-quantity)) this.handleMoney(quantity,toAccount);
+                break;
+            case "retrieve": 
+                if (this.handleMoney(-quantity, thisPerson[bankName].account_number)) thisPerson.handleCash(quantity);
+                break;
+            case "balance":
+                this.handleMoney(0,thisPerson[bankName].account_number);
+        }
     }
+
+    this.Transactions.prototype.handleMoney = function (quantity,toAccount) {
+        if (accounts[toAccount]) {
+            if (quantity > 0 || (quantity < 0 && accounts[toAccount].money > - quantity)) {
+                accounts[toAccount].money += quantity;
+                return true
+            }
+            else if (quantity === 0) {
+                console.log(`Balance: Dear ${accounts[toAccount].name}, you have $${accounts[toAccount].money}`)
+            }
+        }
+    }
+};
+
+Bank.prototype.Transactions = function (accountNumber) {
+    this.account_number = accountNumber;
 }
 
-let myBank = new Bank();
+let BBVA = new Bank("BBVA");
 
-/// Client transactions ///
-console.log(clients[0].Balance)
-clients[0].Retrieve = 300
-console.log(clients[0].Balance)
-clients[1].Deposit(200,clients[3])
-clients[1].Deposit(200,clients[2],false)
-console.log(clients[1].Balance)
-console.log(clients[2].Balance)
-console.log(clients[3].Balance)
-
-/// Bank transactions ///
-myBank.transfer(0,1,1300)
-myBank.deposit(0,2,200)
-console.log(myBank.balance(0))
-console.log(myBank.balance(1))
-console.log(myBank.balance(2))
-myBank.retrieve(2,300);
-console.log(myBank.balance(2))
+BBVA.newClient(person[0])
+BBVA.newClient(person[1])
+BBVA.newClient(person[2])
+person[0].BBVA.operation("deposit",500,1)
+person[2].BBVA.operation("retrieve",300,)
+console.log(person[0].name,", cash",person[0].cash)
+console.log(person[1].name,", cash",person[1].cash)
+console.log(person[2].name,", cash",person[2].cash)
+person[0].BBVA.operation("balance")
+person[1].BBVA.operation("balance")
+person[2].BBVA.operation("balance")
