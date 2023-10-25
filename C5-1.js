@@ -37,13 +37,17 @@ function Bank (bankName) {
             money: 1000,
         };
         accounts[[thisAccountNumber]] = client;
-        newPerson[[this.bankName]] = new this.Transactions (thisAccountNumber);
-        newPerson[[this.bankName]].personID = person.indexOf(newPerson);
+        newPerson[[this.bankName]] = new this.BankCredentials(thisAccountNumber,newPerson);
 
         thisAccountNumber++;
     };
 
-    this.Transactions.prototype.operation = function (type,quantity,toAccount) {
+    this.BankCredentials = function (accountNumber,thisPerson) {
+        this.account_number = accountNumber;
+        this.personID = person.indexOf(thisPerson)
+    }
+
+    this.BankCredentials.prototype.operation = function (type,quantity,toAccount) {
         let thisPerson = person[this.personID];
         switch (type) {
             case "deposit": 
@@ -57,7 +61,7 @@ function Bank (bankName) {
         }
     }
 
-    this.Transactions.prototype.handleMoney = function (quantity,toAccount) {
+    this.BankCredentials.prototype.handleMoney = function (quantity,toAccount) {
         if (accounts[toAccount]) {
             if (quantity > 0 || (quantity < 0 && accounts[toAccount].money > - quantity)) {
                 accounts[toAccount].money += quantity;
@@ -68,11 +72,8 @@ function Bank (bankName) {
             }
         }
     }
+    
 };
-
-Bank.prototype.Transactions = function (accountNumber) {
-    this.account_number = accountNumber;
-}
 
 let BBVA = new Bank("BBVA");
 
